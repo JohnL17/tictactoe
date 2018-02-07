@@ -2,6 +2,7 @@ var tictactoe = require('./tictactoe')
 
 var player = 'x'
 var fieldArray = [[null, null, null], [null, null, null], [null, null, null]]
+var turn = document.getElementsByClassName('turn')
 
 function render(arr) {
   let rows = document.getElementsByTagName('tr')
@@ -25,8 +26,10 @@ function playAgain(array) {
 function playersTurn() {
   if (player === 'x') {
     player = 'o'
+    turn[0].innerHTML = "It's your turn, player 2"
   } else if (player === 'o') {
     player = 'x'
+    turn[0].innerHTML = "It's your turn, player 1"
   }
 }
 
@@ -54,6 +57,7 @@ function cellClicked() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  turn[0].innerHTML = "It's your turn, player 1"
   let cell = document.querySelectorAll('#table td')
   cell.forEach(e => e.addEventListener('click', cellClicked, false))
 })

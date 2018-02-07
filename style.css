@@ -22,8 +22,14 @@ tr td:last-child {
 tr:last-child td {
   border-bottom: 0;
 }
+
+.turn {
+    font-size: 20px;
+    text-align: center;
+}
+
 .result {
-    font-size: 100px;
+    font-size: 20px;
     text-align: center;
 }
 
