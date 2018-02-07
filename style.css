@@ -22,3 +22,15 @@ tr td:last-child {
 tr:last-child td {
   border-bottom: 0;
 }
+.result {
+    font-size: 100px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+.red {
+    background-color: red;
+}
