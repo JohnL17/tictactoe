@@ -7,7 +7,7 @@ const tictactoe = require('./tictactoe')
 app.use(express.static('public'))
 
 let player = 'x'
-const fieldArray = emptyField()
+const fieldArray = tictactoe.emptyField()
 let lastPlayer = ''
 const players = []
 
@@ -33,7 +33,7 @@ io.on('connection', socket => {
     }
     lastPlayer = socket.id
     fieldArray[row][col] = player
-    player = togglePlayer(player)
+    player = tictactoe.togglePlayer(player)
 
     const winningPlayer = tictactoe.winner(fieldArray)
     if (winningPlayer) {
@@ -54,13 +54,3 @@ io.on('connection', socket => {
 http.listen(3000, () => {
   console.log('listening on *:3000')
 })
-
-// Functions for logic
-
-function togglePlayer(player) {
-  return player === 'x' ? 'o' : 'x'
-}
-
-function emptyField() {
-  return [[null, null, null], [null, null, null], [null, null, null]]
-}

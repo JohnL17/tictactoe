@@ -1,6 +1,5 @@
 const test = require('tape')
 const tictactoe = require('./tictactoe')
-const index = require('./index')
 
 const removeDuplicates = tictactoe.removeDuplicates
 const allTheSame = tictactoe.allTheSame
@@ -8,8 +7,8 @@ const winner = tictactoe.winner
 const rowWinner = tictactoe.rowWinner
 const columnWinner = tictactoe.columnWinner
 const diagonalWinner = tictactoe.diagonalWinner
-const togglePlayer = index.togglePlayer
-const emptyField = index.emptyField
+const togglePlayer = tictactoe.togglePlayer
+const emptyField = tictactoe.emptyField
 
 test('removeDuplicates removes all duplicates from an array', t => {
   t.deepEquals(removeDuplicates([1, 2, 3]), [1, 2, 3])
@@ -85,7 +84,7 @@ test('if player is x, it returns o', t => {
 })
 
 test('returns the blank playing field', t => {
-  t.equal(emptyField(), [
+  t.deepEqual(emptyField(), [
     [null, null, null],
     [null, null, null],
     [null, null, null]
