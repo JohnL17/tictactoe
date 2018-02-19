@@ -60,11 +60,21 @@ function winner(arr) {
   return rowWinner(arr) || columnWinner(arr) || diagonalWinner(arr) || null
 }
 
+function togglePlayer(player) {
+  return player === 'x' ? 'o' : 'x'
+}
+
+function emptyField() {
+  return [[null, null, null], [null, null, null], [null, null, null]]
+}
+
 module.exports = {
   removeDuplicates,
   allTheSame,
   winner,
   rowWinner,
   columnWinner,
-  diagonalWinner
+  diagonalWinner,
+  togglePlayer,
+  emptyField
 }
