@@ -1,14 +1,15 @@
 language: node_js
 
 node_js:
-    - "iojs"
+    - "9"
     - "8"
 
 install:
     - npm install
 
 script:
-    - npm test 
+    - npm run lint 
+    - node test.js
 
 cache:
     directories:
