@@ -1,0 +1,35 @@
+<html>
+<head>
+  <title>Tic Tac Toe</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="index.js"></script>
+  <script src="slideshow.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic" rel="stylesheet">
+</head>
+<body>
+  <div class="game">
+      <h1>Tic Tac Toe</h1>
+      <p class="turn"></p>
+
+      <table id="table">
+        <tr data-row="0">
+          <td data-col="0"></td>
+          <td data-col="1"></td>
+          <td data-col="2"></td>
+        </tr>
+        <tr data-row="1">
+          <td data-col="0"></td>
+          <td data-col="1"></td>
+          <td data-col="2"></td>
+        </tr>
+        <tr data-row="2">
+          <td data-col="0"></td>
+          <td data-col="1"></td>
+          <td data-col="2"></td>
+        </tr>
+      </table>
+      <p class="result"></p>
+  </div>
+</body>
+</html>

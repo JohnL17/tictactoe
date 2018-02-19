@@ -4,18 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tape-watch -c test.js | tap-spec",
-    "start": "watchify index.js -o bundle.js --debug"
+    "test": "npm run lint && tape-watch -c test.js | tap-spec",
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "nodemon": "^1.14.12",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.3",
-    "tape-watch": "^2.3.0",
-    "watchify": "^3.9.0"
+    "tape-watch": "^2.3.0"
   },
   "dependencies": {
-    "jquery": "^3.2.0"
+    "express": "^4.15.2",
+    "socket.io": "^2.0.4"
   }
 }
