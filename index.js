@@ -1,63 +1,66 @@
-var tictactoe = require('./tictactoe')
+const express = require('express')
+const app = express()
+const http = require('http').Server(app)
+const io = require('socket.io')(http)
+const tictactoe = require('./tictactoe')
 
-var player = 'x'
-var fieldArray = [[null, null, null], [null, null, null], [null, null, null]]
-var turn = document.getElementsByClassName('turn')
+app.use(express.static('public'))
 
-function render(arr) {
-  let rows = document.getElementsByTagName('tr')
-  let cols = document.getElementsByTagName('td')
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      rows.item(i).children.item(j).textContent = arr[i][j]
+let player = 'x'
+const fieldArray = emptyField()
+let lastPlayer = ''
+const players = []
+
+io.on('connection', socket => {
+  players.push(socket.id)
+  console.log('a user connected')
+  console.log(players)
+
+  if (players.length >= 2) {
+    io.emit('ready', players[0], players[1], fieldArray)
+  } else {
+    io.emit('waiting for players', socket.id)
+  }
+
+  socket.on('clicked', (row, col) => {
+    if (lastPlayer === socket.id) {
+      console.log('it is not your turn!')
+      return
     }
-  }
-}
-
-function showWinner() {
-  var result = document.getElementsByClassName('result')
-  result[0].innerHTML = tictactoe.winner(fieldArray) + ' wins!'
-}
-
-function playAgain(array) {
-  render(fieldArray)
-}
-
-function playersTurn() {
-  if (player === 'x') {
-    player = 'o'
-    turn[0].innerHTML = "It's your turn, player 2"
-  } else if (player === 'o') {
-    player = 'x'
-    turn[0].innerHTML = "It's your turn, player 1"
-  }
-}
-
-function cellClicked() {
-  var row = parseInt(this.parentNode.getAttribute('data-row'))
-  var col = parseInt(this.getAttribute('data-col'))
-  if (fieldArray[row][col] === null) {
+    if (fieldArray[row][col] !== null) {
+      console.log('this field is already taken!')
+      return
+    }
+    lastPlayer = socket.id
     fieldArray[row][col] = player
-    playersTurn()
-  }
+    player = togglePlayer(player)
 
-  render(fieldArray)
-  var winner = tictactoe.winner(fieldArray)
-
-  if (winner) {
-    showWinner()
-    var answer = confirm('Do you wanna play again?')
-    if (answer) {
-      fieldArray = [[null, null, null], [null, null, null], [null, null, null]]
-      playAgain(fieldArray)
+    const winningPlayer = tictactoe.winner(fieldArray)
+    if (winningPlayer) {
+      io.emit('winner', winningPlayer)
     }
-  }
+    io.emit('new state', fieldArray, socket.id)
+  })
+  socket.on('disconnect', () => {
+    console.log('disconnect: ', socket.id)
+    const index = players.indexOf(socket.id)
+    if (index > -1) {
+      players.splice(index, 1)
+    }
+    console.log(players)
+  })
+})
 
-  console.log('clicked cell ' + col + ' in row ' + row)
+http.listen(3000, () => {
+  console.log('listening on *:3000')
+})
+
+// Functions for logic
+
+function togglePlayer(player) {
+  return player === 'x' ? 'o' : 'x'
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  turn[0].innerHTML = "It's your turn, player 1"
-  let cell = document.querySelectorAll('#table td')
-  cell.forEach(e => e.addEventListener('click', cellClicked, false))
-})
+function emptyField() {
+  return [[null, null, null], [null, null, null], [null, null, null]]
+}
