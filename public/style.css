@@ -1,10 +1,13 @@
 body {
-  width: 500px;
-  height: 500px;
-  margin: 0 auto;
   font-family: 'Carrois Gothic', sans-serif;
   background-image: url("1.jpg");
   background-repeat: no-repeat;
+}
+
+.game {
+  margin: 0 auto;
+  width: 500px;
+  height: 500px;
 }
 
 table {
@@ -33,18 +36,32 @@ tr:last-child td {
 .turn {
   font-size: 20px;
   text-align: center;
+  margin: 0 0 40px 0;
 }
 
 .result {
-  font-size: 20px;
+  font-size: 50px;
   text-align: center;
 }
 
 h1 {
+  margin: 0 0 100px 0;
   text-align: center;
-  letter-spacing: 10px;
+  letter-spacing: 31px;
 }
 
-.red {
-  background-color: red;
+.play-again {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 40px 0;
+}
+
+.restart {
+  background-color: #6699ff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
 }

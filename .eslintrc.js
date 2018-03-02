@@ -7,6 +7,10 @@ module.exports = {
     'prefer-const': 2,
     'no-var': 2,
     'no-const-assign': 2,
-    eqeqeq: 2
+    'no-else-return': 2,
+    'multiline-comment-style': 2,
+    eqeqeq: 2,
+    curly: 2,
+    yoda: 2
   }
 }

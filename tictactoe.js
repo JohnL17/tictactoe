@@ -64,6 +64,13 @@ function togglePlayer(player) {
   return player === 'x' ? 'o' : 'x'
 }
 
+function swapArrayElements(arr, indexA, indexB) {
+  const temp = arr[indexA]
+  arr[indexA] = arr[indexB]
+  arr[indexB] = temp
+  return arr
+}
+
 function emptyField() {
   return [[null, null, null], [null, null, null], [null, null, null]]
 }
@@ -76,5 +83,6 @@ module.exports = {
   columnWinner,
   diagonalWinner,
   togglePlayer,
-  emptyField
+  emptyField,
+  swapArrayElements
 }
