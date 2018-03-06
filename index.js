@@ -8,9 +8,9 @@ app.use(express.static('public'))
 
 let player = 'x'
 let lastPlayer = ''
-let confirmed_players = []
 let fieldArray = tictactoe.emptyField()
 const players = []
+const confirmed_players = []
 
 /*
  * creates connection with socket and pushes players socket.id in
@@ -70,13 +70,17 @@ io.on('connection', socket => {
    */
   socket.on('play again', () => {
     socket.broadcast.emit('player confirmed', players[0], players[1])
+    if (
+      socket.id === confirmed_players[0] ||
+      socket.id === confirmed_players[1]
+    ) {
+      return
+    }
     confirmed_players.push(socket.id)
-    console.log('Not all player have confirmed')
-    console.log(confirmed_players)
     if (confirmed_players.length === 2) {
       fieldArray = tictactoe.emptyField()
       io.emit('new state', players[0], players[1], socket.id, fieldArray)
-      confirmed_players = []
+      confirmed_players.length = 0
     }
   })
 

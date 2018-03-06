@@ -9,6 +9,7 @@ const columnWinner = tictactoe.columnWinner
 const diagonalWinner = tictactoe.diagonalWinner
 const togglePlayer = tictactoe.togglePlayer
 const emptyField = tictactoe.emptyField
+const swapArrayElements = tictactoe.swapArrayElements
 
 test('removeDuplicates removes all duplicates from an array', t => {
   t.deepEquals(removeDuplicates([1, 2, 3]), [1, 2, 3])
@@ -88,6 +89,17 @@ test('returns the blank playing field', t => {
     [null, null, null],
     [null, null, null],
     [null, null, null]
+  ])
+  t.end()
+})
+
+test('swap elements in array', t => {
+  t.deepEqual(swapArrayElements(['abc', 'def'], 0, 1), ['def', 'abc'])
+  t.deepEqual(swapArrayElements(['abc', 'def', 'ghi', 'jkl'], 2, 3), [
+    'abc',
+    'def',
+    'jkl',
+    'ghi'
   ])
   t.end()
 })

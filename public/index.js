@@ -1,4 +1,3 @@
-// const emptyField = [[null, null, null], [null, null, null], [null, null, null]]
 const turn = document.getElementsByClassName('turn')
 const result = document.getElementsByClassName('result')
 const socket = io()
@@ -19,6 +18,7 @@ socket.on('new state', (playerOne, playerTwo, lastPlayer, newState) => {
     } else {
       turn[0].innerHTML =
         'The room is already full. You can watch the game, though.'
+      result[0].innerHTML = ''
     }
     console.log('game just started!')
   } else {
@@ -35,6 +35,8 @@ socket.on('new state', (playerOne, playerTwo, lastPlayer, newState) => {
 })
 
 socket.on('winner', (winner, playerOne, playerTwo, newState) => {
+  const cell = document.querySelectorAll('#table td')
+  cell.forEach(e => e.removeEventListener('click', cellClicked, false))
   render(newState)
   showWinner(winner)
   if (socket.id === playerOne || socket.id === playerTwo) {
@@ -43,6 +45,10 @@ socket.on('winner', (winner, playerOne, playerTwo, newState) => {
     button.hidden = false
     button.addEventListener('click', () => {
       socket.emit('play again')
+      button.hidden = true
+      turn[0].innerHTML = ''
+      result[0].innerHTML = ''
+      cell.forEach(e => e.addEventListener('click', cellClicked, false))
     })
   }
 })
@@ -51,7 +57,6 @@ socket.on('player confirmed', (playerOne, playerTwo) => {
   if (socket.id === playerOne || socket.id === playerTwo) {
     turn[0].innerHTML =
       'The other player wants to play again. Please click on "play again" to confirm'
-    result[0].innerHTML = ''
   }
 })
 
@@ -77,19 +82,6 @@ function showWinner(player) {
   const result = document.getElementsByClassName('result')
   result[0].innerHTML = player + ' wins!'
 }
-
-/*
- *function playAgain() {
- * return render(emptyField)
- *}
- */
-
-/*
- *function resetGame() {
- *const result = document.getElementsByClassName('result')
- *result[0].innerHTML = ''
- *}
- */
 
 function cellClicked() {
   const row = parseInt(this.parentNode.getAttribute('data-row'))
