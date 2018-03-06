@@ -1,4 +1,4 @@
-const images = ['1.jpg', '2.jpg', '3.jpg']
+const images = ['/pictures/1.jpg', '/pictures/2.jpg', '/pictures/3.jpg']
 
 setInterval(() => {
   const image = images.shift()
