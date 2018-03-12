@@ -40,16 +40,7 @@ socket.on('winner', (winner, playerOne, playerTwo, newState) => {
   render(newState)
   showWinner(winner)
   if (socket.id === playerOne || socket.id === playerTwo) {
-    const button = document.getElementsByClassName('restart')[0]
-    turn[0].innerHTML = ''
-    button.hidden = false
-    button.addEventListener('click', () => {
-      socket.emit('play again')
-      button.hidden = true
-      turn[0].innerHTML = ''
-      result[0].innerHTML = ''
-      cell.forEach(e => e.addEventListener('click', cellClicked, false))
-    })
+    playAgain()
   }
 })
 
@@ -90,6 +81,24 @@ function cellClicked() {
   socket.emit('clicked', row, col)
 
   console.log('clicked cell ' + col + ' in row ' + row)
+}
+
+function playAgain() {
+  const button = document.getElementsByClassName('restart')[0]
+  const cell = document.querySelectorAll('#table td')
+  turn[0].innerHTML = ''
+  button.hidden = false
+  button.addEventListener(
+    'click',
+    () => {
+      socket.emit('play again')
+      button.hidden = true
+      turn[0].innerHTML = 'Please wait for the other player'
+      result[0].innerHTML = ''
+      cell.forEach(e => e.addEventListener('click', cellClicked, false))
+    },
+    { once: true }
+  )
 }
 
 document.addEventListener('DOMContentLoaded', () => {
