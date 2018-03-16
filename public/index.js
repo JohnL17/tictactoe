@@ -1,40 +1,32 @@
 const turn = document.getElementsByClassName('turn')
 const result = document.getElementsByClassName('result')
-const socket = io()
+let socket
 
-socket.on('waiting for players', () => {
+function waitingForPlayers() {
   turn[0].innerHTML =
     'Welcome to Tic Tac Toe. Please wait until all players are connected'
-})
+}
 
-socket.on('new state', (playerOne, playerTwo, lastPlayer, newState) => {
+function newState(playerOne, playerTwo, lastPlayer, newState) {
   render(newState)
 
-  if (isEmpty(newState)) {
-    if (socket.id === playerOne) {
-      turn[0].innerHTML = 'All players are connected. It is your turn'
-    } else if (socket.id === playerTwo) {
-      turn[0].innerHTML = 'All players are connected. Wait on your turn'
-    } else {
-      turn[0].innerHTML =
-        'The room is already full. You can watch the game, though.'
-      result[0].innerHTML = ''
-    }
-    console.log('game just started!')
-  } else {
-    if (socket.id === lastPlayer) {
-      turn[0].innerHTML = "It's not your turn"
-    } else {
-      turn[0].innerHTML = "It's your turn"
-    }
+  if (isEmpty(newState) && socket && socket.id === playerOne) {
+    turn[0].innerHTML = 'All players are connected. It is your turn'
+  } else if (isEmpty(newState) && socket && socket.id === playerTwo) {
+    turn[0].innerHTML = 'All players are connected. Wait on your turn'
+  } else if (socket.id === lastPlayer) {
+    turn[0].innerHTML = "It's not your turn"
+  } else if (socket.id !== lastPlayer) {
+    turn[0].innerHTML = "It's your turn"
   }
+
   if (!(socket.id === playerOne) && !(socket.id === playerTwo)) {
     turn[0].innerHTML =
       'The room is already full. You can watch the game, though.'
   }
-})
+}
 
-socket.on('winner', (winner, playerOne, playerTwo, newState) => {
+function winner(winner, playerOne, playerTwo, newState) {
   const cell = document.querySelectorAll('#table td')
   cell.forEach(e => e.removeEventListener('click', cellClicked, false))
   render(newState)
@@ -42,14 +34,28 @@ socket.on('winner', (winner, playerOne, playerTwo, newState) => {
   if (socket.id === playerOne || socket.id === playerTwo) {
     playAgain()
   }
-})
+}
 
-socket.on('player confirmed', (playerOne, playerTwo) => {
+function playerConfirmed(playerOne, playerTwo) {
   if (socket.id === playerOne || socket.id === playerTwo) {
     turn[0].innerHTML =
       'The other player wants to play again. Please click on "play again" to confirm'
   }
-})
+}
+
+function setupSocket() {
+  socket = io('http://localhost:3000', {
+    transports: ['websocket', 'polling', 'flashsocket']
+  })
+
+  socket.on('waiting for players', waitingForPlayers)
+
+  socket.on('new state', newState)
+
+  socket.on('winner', winner)
+
+  socket.on('player confirmed', playerConfirmed)
+}
 
 // functions
 
@@ -102,6 +108,25 @@ function playAgain() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupSocket()
   const cell = document.querySelectorAll('#table td')
   cell.forEach(e => e.addEventListener('click', cellClicked, false))
 })
+
+/* eslint-disable no-undef */
+/*istanbul ignore next */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    waitingForPlayers,
+    newState,
+    winner,
+    playerConfirmed,
+    setupSocket,
+    isEmpty,
+    render,
+    showWinner,
+    cellClicked,
+    playAgain
+  }
+}
+/* eslint-enable no-undef */

@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "coverage": "istanbul cover tape test.js",
+    "coverage": "node_modules/.bin/istanbul cover node_modules/.bin/tape test.js",
     "test": "npm run lint && tape-watch -c test.js | tap-spec",
+    "front-end-test": "tape ./front-end-testing/test/* | tap-spec",
+    "front-end-coverage-test": "node_modules/.bin/istanbul cover node_modules/.bin/tape /front-end-testing/test/test.spec.js",
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^4.17.0",
+    "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0-beta.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-node": "^6.0.0",
@@ -28,6 +32,12 @@
   "dependencies": {
     "express": "^4.15.2",
     "handlebars": "^4.0.11",
-    "socket.io": "^2.0.4"
-  }
+    "jsdom": "^11.6.2",
+    "mock-socket": "^7.1.0",
+    "socket.io": "^2.0.4",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "eslintIgnore": [
+    "/coverage"
+  ]
 }
